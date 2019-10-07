@@ -1,6 +1,6 @@
 import checkPropTypes from 'check-prop-types';
 
-export const findByTestAttr = (wrapper, val) => {
+export const findTagsWithTestAttribute = (wrapper, val) => {
   return wrapper.find(`[data-test="${val}"]`);
 };
 
