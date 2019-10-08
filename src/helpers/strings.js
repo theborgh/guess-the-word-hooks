@@ -26,6 +26,9 @@ function getStringByLanguage(
 ) {
   if (!strings[languageCode] || !strings[languageCode][stringKey]) {
     // fallback to English
+    console.warn(
+      `Could not get string [${stringKey}] for language [${languageCode}]`
+    );
     return strings.en[stringKey];
   }
 
