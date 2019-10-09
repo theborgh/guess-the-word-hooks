@@ -9,7 +9,7 @@ const defaultProps = {success: false};
 
 const setup = ({success, language}) => {
   success = success || false;
-  language = language || 'english';
+  language = language || 'en';
   return mount(
     <languageContext.Provider value={language}>
       <Congrats success={success} />

@@ -12,7 +12,9 @@ const setup = (secretWord = 'party') => {
   mockGetSecretWord.mockClear(); // so the call count does not accumulate
   hookActions.getSecretWord = mockGetSecretWord;
 
-  const mockUseReducer = jest.fn().mockReturnValue([{secretWord}, jest.fn()]);
+  const mockUseReducer = jest
+    .fn()
+    .mockReturnValue([{secretWord, language: 'en'}, jest.fn()]);
 
   React.useReducer = mockUseReducer;
 

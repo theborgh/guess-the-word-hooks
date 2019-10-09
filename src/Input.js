@@ -1,8 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Input = ({secretWord}) => {
-  const [currentGuess, setCurrentGuess] = React.useState(''); // must not destructure so I can mock it
+import languageContext from './contexts/languageContext';
+import stringsModule from './helpers/strings';
+import {getLetterMatchCount} from './helpers';
+
+function Input({secretWord}) {
+  const language = React.useContext(languageContext);
+  const [currentGuess, setCurrentGuess] = React.useState('');
+
   return (
     <div data-test='component-Input'>
       <form className='form-inline'>
@@ -10,24 +16,34 @@ const Input = ({secretWord}) => {
           data-test='input-box'
           className='mb-2 mx-sm-3'
           type='text'
-          placeholder='Enter your guess'
+          placeholder={stringsModule.getStringByLanguage(
+            language,
+            'guessInputPlaceholder'
+          )}
           value={currentGuess}
           onChange={event => setCurrentGuess(event.target.value)}
         />
         <button
           data-test='submit-button'
-          className='btn btn-primary mb-2'
-          onClick={e => {
-            e.preventDefault();
+          onClick={evt => {
+            evt.preventDefault();
+            // update guessedWords
+            const letterMatchCount = getLetterMatchCount(
+              currentGuess,
+              secretWord
+            );
+
+            // clear input box
             setCurrentGuess('');
           }}
+          className='btn btn-primary mb-2'
         >
-          Submit
+          {stringsModule.getStringByLanguage(language, 'submit')}
         </button>
       </form>
     </div>
   );
-};
+}
 
 Input.propTypes = {
   secretWord: PropTypes.string.isRequired,

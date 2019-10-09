@@ -1,15 +1,14 @@
 import stringsModule from './strings';
-
 const {getStringByLanguage} = stringsModule;
 
 const strings = {
   en: {submit: 'submit'},
-  emoji: {submit: '🚀️'},
-  piglatin: {},
+  emoji: {submit: '🚀'},
+  mermish: {},
 };
 
-describe('', () => {
-  const mockWarn = jest.fn(); // to avoid seeing warnings in tests
+describe('language string testing', () => {
+  const mockWarn = jest.fn();
   let originalWarn;
 
   beforeEach(() => {
@@ -21,31 +20,28 @@ describe('', () => {
     console.warn = originalWarn;
   });
 
-  it('returns correct submit string for English', () => {
+  test('returns correct submit string for english', () => {
     const string = getStringByLanguage('en', 'submit', strings);
     expect(string).toBe('submit');
     expect(mockWarn).not.toHaveBeenCalled();
   });
-
-  it('returns the correct submit string for Emoji', () => {
+  test('returns the correct submit string for emoji', () => {
     const string = getStringByLanguage('emoji', 'submit', strings);
-    expect(string).toBe('🚀️');
+    expect(string).toBe('🚀');
     expect(mockWarn).not.toHaveBeenCalled();
   });
-
-  it('returns English submit string if language cannot be found', () => {
-    const string = getStringByLanguage('notALang', 'submit', strings);
+  test('returns english submit string when language does not exist', () => {
+    const string = getStringByLanguage('notALanguage', 'submit', strings);
     expect(string).toBe('submit');
     expect(mockWarn).toHaveBeenCalledWith(
-      'Could not get string [submit] for language [notALang]'
+      'Could not get string [submit] for [notALanguage]'
     );
   });
-
-  it('returns English if submit key does not exist', () => {
-    const string = getStringByLanguage('piglatin', 'submit', strings);
+  test('returns english submit string when submit key does not exist for language', () => {
+    const string = getStringByLanguage('mermish', 'submit', strings);
     expect(string).toBe('submit');
     expect(mockWarn).toHaveBeenCalledWith(
-      'Could not get string [submit] for language [piglatin]'
+      'Could not get string [submit] for [mermish]'
     );
   });
 });
