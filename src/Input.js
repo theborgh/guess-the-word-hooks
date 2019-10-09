@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import languageContext from './contexts/languageContext';
 import stringsModule from './helpers/strings';
-import {getLetterMatchCount} from './helpers';
 
 function Input({secretWord}) {
   const language = React.useContext(languageContext);
@@ -27,11 +26,6 @@ function Input({secretWord}) {
           data-test='submit-button'
           onClick={evt => {
             evt.preventDefault();
-            // update guessedWords
-            const letterMatchCount = getLetterMatchCount(
-              currentGuess,
-              secretWord
-            );
 
             // clear input box
             setCurrentGuess('');

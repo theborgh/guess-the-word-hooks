@@ -1,6 +1,6 @@
 import React from 'react';
 import {shallow} from 'enzyme';
-import {findByTestAttr, checkProps} from '../test/testUtils';
+import {checkProps, findTagsWithTestAttribute} from '../test/testUtils';
 import GuessedWords from './GuessedWords';
 
 const defaultProps = {
@@ -22,11 +22,17 @@ describe('if there are no words guessed', () => {
     wrapper = setup({guessedWords: []});
   });
   test('renders without error', () => {
-    const component = findByTestAttr(wrapper, 'component-guessed-words');
+    const component = findTagsWithTestAttribute(
+      wrapper,
+      'component-guessed-words'
+    );
     expect(component.length).toBe(1);
   });
   test('renders instructions to guess a word', () => {
-    const instructions = findByTestAttr(wrapper, 'guess-instructions');
+    const instructions = findTagsWithTestAttribute(
+      wrapper,
+      'guess-instructions'
+    );
     expect(instructions.text().length).not.toBe(0);
   });
 });
@@ -41,15 +47,41 @@ describe('if there are words guessed', () => {
     wrapper = setup({guessedWords});
   });
   test('renders without error', () => {
-    const component = findByTestAttr(wrapper, 'component-guessed-words');
+    const component = findTagsWithTestAttribute(
+      wrapper,
+      'component-guessed-words'
+    );
     expect(component.length).toBe(1);
   });
   test('renders "guessed words" section', () => {
-    const guessedWordsNode = findByTestAttr(wrapper, 'guessed-words');
+    const guessedWordsNode = findTagsWithTestAttribute(
+      wrapper,
+      'guessed-words'
+    );
     expect(guessedWordsNode.length).toBe(1);
   });
   test('correct number of guessed words', () => {
-    const guessedWordNodes = findByTestAttr(wrapper, 'guessed-word');
+    const guessedWordNodes = findTagsWithTestAttribute(wrapper, 'guessed-word');
     expect(guessedWordNodes.length).toBe(guessedWords.length);
+  });
+});
+
+describe('languagePicker', () => {
+  it('renders instructions in English by default', () => {
+    const wrapper = setup({guessedWords: []});
+    const guessInstructions = findTagsWithTestAttribute(
+      wrapper,
+      'guess-instructions'
+    );
+    expect(guessInstructions.text()).toBe('Try to guess the secret word!');
+  });
+
+  it('renders instructions in emoji', () => {
+    const mockUseContext = jest.fn().mockReturnValue('emoji');
+    React.useContext = mockUseContext;
+    const wrapper = setup({guessedWords: []});
+    expect(
+      findTagsWithTestAttribute(wrapper, 'guess-instructions').text()
+    ).toBe('🤔🤫🔤');
   });
 });
