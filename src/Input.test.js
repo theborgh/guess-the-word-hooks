@@ -1,20 +1,32 @@
 import React from 'react';
 import {mount} from 'enzyme';
+
 import {findTagsWithTestAttribute, checkProps} from '../test/testUtils';
 import Input from './Input';
 import languageContext from './contexts/languageContext';
+import successContext from './contexts/successContext';
+import guessedWordsContext from './contexts/guessedWordsContext';
 
-const setup = ({language = 'en', secretWord = 'party'}) => {
+const setup = ({language, secretWord, success}) => {
+  language = language || 'en';
+  secretWord = secretWord || 'party';
+  success = success || false;
+
   return mount(
     <languageContext.Provider value={language}>
-      <Input secretWord={secretWord} />
+      <successContext.SuccessProvider value={[success, jest.fn()]}>
+        <guessedWordsContext.GuessedWordsProvider>
+          <Input secretWord={secretWord} />
+        </guessedWordsContext.GuessedWordsProvider>
+      </successContext.SuccessProvider>
     </languageContext.Provider>
   );
 };
 
-it('renders without errors', () => {
+it('Input renders without error', () => {
   const wrapper = setup({});
-  expect(findTagsWithTestAttribute(wrapper, 'component-Input').length).toBe(1);
+  const inputComponent = findTagsWithTestAttribute(wrapper, 'component-input');
+  expect(inputComponent.length).toBe(1);
 });
 
 it('does not throw warning with expected props', () => {
@@ -30,18 +42,15 @@ describe('state controlled input field', () => {
     React.useState = jest.fn(() => ['', mockSetCurrentGuess]);
     wrapper = setup({});
   });
-
   it('state updates with value of input box upon change', () => {
     const inputBox = findTagsWithTestAttribute(wrapper, 'input-box');
 
-    // Simulate input-box getting a value of "train"
     const mockEvent = {target: {value: 'train'}};
     inputBox.simulate('change', mockEvent);
 
     expect(mockSetCurrentGuess).toHaveBeenCalledWith('train');
   });
-
-  it('clears currentGuess on submit', () => {
+  it('field is cleared upon submit button click', () => {
     const submitButton = findTagsWithTestAttribute(wrapper, 'submit-button');
 
     submitButton.simulate('click', {preventDefault() {}});
@@ -50,17 +59,19 @@ describe('state controlled input field', () => {
 });
 
 describe('languagePicker', () => {
-  it('renders submit string in English', () => {
+  it('correctly renders submit string in english', () => {
     const wrapper = setup({language: 'en'});
-    expect(findTagsWithTestAttribute(wrapper, 'submit-button').text()).toBe(
-      'Submit'
-    );
+    const submitButton = findTagsWithTestAttribute(wrapper, 'submit-button');
+    expect(submitButton.text()).toBe('Submit');
   });
-
-  it('renders submit string in Emoji', () => {
+  it('correctly renders congrats string in emoji', () => {
     const wrapper = setup({language: 'emoji'});
-    expect(findTagsWithTestAttribute(wrapper, 'submit-button').text()).toBe(
-      '🚀'
-    );
+    const submitButton = findTagsWithTestAttribute(wrapper, 'submit-button');
+    expect(submitButton.text()).toBe('🚀');
   });
+});
+
+it('input component does not show when success is true', () => {
+  const wrapper = setup({secretWord: 'party', success: true});
+  expect(wrapper.isEmptyRender()).toBe(true);
 });
