@@ -2,9 +2,12 @@ import React from 'react';
 import './App.css';
 import hookActions from './actions/hookActions';
 import languageContext from './contexts/languageContext';
+import successContext from './contexts/successContext';
 
 import Input from './Input';
 import LanguagePicker from './LanguagePicker';
+import Congrats from './Congrats';
+import GuessedWords from './GuessedWords';
 
 // run automatically
 function reducer(state, action) {
@@ -48,7 +51,11 @@ function App() {
       <h1>Guess the word</h1>
       <languageContext.Provider value={state.language}>
         <LanguagePicker setLanguage={setLanguage} />
-        <Input secretWord={state.secretWord} />
+        <successContext.SuccessProvider>
+          <Congrats />
+          <Input secretWord={state.secretWord} />
+        </successContext.SuccessProvider>
+        {/* <GuessedWords /> */}
       </languageContext.Provider>
     </div>
   );

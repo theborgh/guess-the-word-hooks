@@ -1,18 +1,18 @@
 import React from 'react';
 import {shallow, mount} from 'enzyme';
 
-import {findByTestAttr, checkProps} from '../test/testUtils';
 import Congrats from './Congrats';
 import languageContext from './contexts/languageContext';
-
-const defaultProps = {success: false};
+import successContext from './contexts/successContext';
 
 const setup = ({success, language}) => {
   success = success || false;
   language = language || 'en';
   return mount(
     <languageContext.Provider value={language}>
-      <Congrats success={success} />
+      <successContext.SuccessProvider value={[success, jest.fn()]}>
+        <Congrats />
+      </successContext.SuccessProvider>
     </languageContext.Provider>
   );
 };
