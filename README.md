@@ -1,35 +1,11 @@
-This project is a simple "Guess the word" app developed with a pure TDD approach.
+# Guess the word
 
-The app is very simple in function, but is purposely overengineered in order to provide a simple testbed for async, hooks, and context testing via Jest/Enzyme in the same small app without getting lost in the details of a bigger project.
+A simple 'Guess the word' game implemented with a pure TDD approach, using Jest and Enzyme for unit and integration testing.
 
-## Installation
+# Installation
 
-To play the game, you'll need to install both the word server and the frontend.
+First, clone the repository locally with `git clone https://github.com/theborgh/guess-the-word-hooks.git`.
 
-### Installing the word server
+Then, `cd` into the directory and install packages with the command `cd guess-the-word-hooks && npm install`
 
-First, clone the word server repo to your local machine:
-
-git clone https://github.com/flyrightsister/udemy-react-testing-projects
-
-then cd into the server directory and run the npm install command:
-
-cd udemy-react-testing-projects/random-word-server && npm install
-
-And run the app:
-
-npm start
-
-### Installing the frontend
-
-Clone the frontend repo:
-
-git clone https://github.com/theborgh/guess-the-word-hooks.git
-
-then cd in the directory and npm install:
-
-cd guess-the-word-hooks && npm install
-
-Finally, start the frontend with:
-
-npm start
+You can now start your cloned repository on a local server with `npm start`.
