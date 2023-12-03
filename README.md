@@ -1,6 +1,6 @@
 # Guess the word
 
-The app is very simple in function, but is purposely overengineered in order to provide a simple testbed for async, hooks, and context testing via Jest/Enzyme in the same small app without getting lost in the details of a bigger project.
+This app is a simple "guess the word" game in which the code is purposely overengineered in order to provide a simple testbed for a TDD approach with async code, hooks, and context testing via Jest/Enzyme.
 
 # Installation
 
